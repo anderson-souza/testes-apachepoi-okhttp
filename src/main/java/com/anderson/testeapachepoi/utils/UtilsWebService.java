@@ -28,7 +28,7 @@ public class UtilsWebService {
 		CNPJ = CNPJ.replaceAll("[^A-Za-z0-9]", "");
 
 		final String BASE_URL = "https://www.receitaws.com.br/v1/cnpj";
-		Request request = new Request.Builder().url(BASE_URL + "/" + CNPJ).build();
+		Request request = buildRequest(BASE_URL + "/" + CNPJ);
 		ReceitaWS receitaWS = null;
 		try (Response response = client.newCall(request).execute()) {
 			receitaWS = objectMapper.readValue(response.body().bytes(), ReceitaWS.class);
@@ -43,7 +43,7 @@ public class UtilsWebService {
 		CEP = CEP.replaceAll("[^A-Za-z0-9]", "");
 
 		final String BASE_URL = "https://api.postmon.com.br/v1/cep/";
-		Request request = new Request.Builder().url(BASE_URL + "/" + CEP).build();
+		Request request = buildRequest(BASE_URL + "/" + CEP);
 		CEPWS cepWS = null;
 		try (Response response = client.newCall(request).execute()) {
 			cepWS = objectMapper.readValue(response.body().bytes(), CEPWS.class);
@@ -51,6 +51,10 @@ public class UtilsWebService {
 			e.printStackTrace();
 		}
 		return cepWS;
+	}
+
+	private Request buildRequest(String fullURL) {
+		return new Request.Builder().url(fullURL).build();
 	}
 
 }
